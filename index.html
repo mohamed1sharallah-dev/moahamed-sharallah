@@ -35,9 +35,11 @@ h1{font-size:clamp(2.4rem,8vw,4.6rem);line-height:1.02;margin:0 0 16px;font-weig
 section{padding:44px 0;border-top:1px solid var(--line)}
 h2{font-size:1.5rem;margin:0 0 20px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.work-grid{grid-template-columns:minmax(0,1fr)}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden}
 .media{display:block;width:100%;border:0;background:#000}
 .media.portrait{aspect-ratio:9/16;object-fit:contain}
+.work-grid .media.portrait{width:min(100%,320px);margin-inline:auto}
 .media.landscape{aspect-ratio:16/9}
 .card div.t{padding:14px 16px}
 .card h3{margin:0 0 4px;font-size:1.05rem}
@@ -74,7 +76,7 @@ footer{padding:28px 0 40px;color:var(--mute);font-size:.85rem}
 
 <section>
 <h2>Selected work</h2>
-<div class="grid">
+<div class="grid work-grid">
  <article class="card">
   <video class="media portrait" controls playsinline preload="metadata" aria-label="Signal brand video (Arabic)">
    <source src="signall.mp4" type="video/mp4">
