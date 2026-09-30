@@ -19,6 +19,13 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Space Grotesk','Cairo',system-ui,sans-serif;line-height:1.6}
 .wrap{max-width:960px;margin:0 auto;padding:0 20px}
 header{padding:48px 0 24px}
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px;align-items:center}
+.stage{position:relative;aspect-ratio:1;width:100%;max-width:420px;justify-self:center}
+.stage::before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(60,213,232,.18),rgba(255,61,129,.12) 55%,transparent 72%)}
+#gl{position:relative;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab}
+#gl:active{cursor:grabbing}
+#gl:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:50%}
+.hint{position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:.75rem;color:var(--mute);pointer-events:none}
 h1{font-size:clamp(2.4rem,8vw,4.6rem);line-height:1.02;margin:0 0 16px;font-weight:700;letter-spacing:-.02em;max-width:14ch}
 .sub{font-size:1.1rem;color:var(--mute);max-width:52ch;margin:0 0 6px}
 .ar{font-family:'Cairo',sans-serif;direction:rtl;text-align:right;color:var(--mute);max-width:52ch;margin:0}
@@ -54,6 +61,7 @@ a.btn:hover,a.btn:focus-visible{transform:translateY(-2px);filter:brightness(1.0
 .contact-actions{display:flex;flex-wrap:wrap;gap:12px}
 a:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
 footer{padding:28px 0 40px;color:var(--mute);font-size:.85rem}
+@media (max-width:720px){.hero{grid-template-columns:1fr}.stage{max-width:300px}}
 @media (max-width:560px){.grid{grid-template-columns:1fr}.wrap{padding:0 16px}header{padding-top:36px}}
 @media (prefers-reduced-motion:reduce){
  .head::after{animation:none;left:60%}
@@ -62,13 +70,22 @@ footer{padding:28px 0 40px;color:var(--mute);font-size:.85rem}
  a.btn:hover,a.btn:focus-visible{transform:none;filter:none}
 }
 </style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 </head>
 <body>
 <div class="wrap">
 <header>
+<div class="hero">
+ <div class="hero-text">
 <h1>Premiere edits with a 3D brain.</h1>
 <p class="sub">Mohamed Sharallah, video editor and 3D artist in Egypt. I edit in Adobe Premiere and add motion and 3D shots built in Maya, Blender and Unreal Engine.</p>
 <p class="ar" lang="ar">مونتاج فيديو بالعربي والإنجليزي، مع لقطات ثلاثية الأبعاد عند الحاجة.</p>
+ </div>
+ <div class="stage">
+  <canvas id="gl" role="img" aria-label="Interactive 3D torus knot" aria-describedby="hero-hint" tabindex="0"></canvas>
+  <div class="hint" id="hero-hint">Drag to rotate, or focus and use arrow keys.</div>
+ </div>
+</div>
 <div class="tl" aria-label="Skills shown as a Premiere-style timeline">
  <div class="track"><b>V2</b><div class="lane"><div class="clip n" style="flex:2">Unreal Engine</div><div class="clip n" style="flex:3">Maya</div><div class="clip n" style="flex:2">Blender</div></div></div>
  <div class="track"><b>V1</b><div class="lane"><div class="clip" style="flex:7">Adobe Premiere Pro</div></div></div>
@@ -129,6 +146,149 @@ if ((!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)'
  document.querySelectorAll('[data-reveal]').forEach(element => observer.observe(element));
  document.body.classList.add('motion-ready');
 }
+</script>
+<script type="module">
+(async () => {
+ const stage = document.querySelector('.stage');
+ const canvas = document.getElementById('gl');
+ if (!stage || !canvas) return;
+
+ try {
+  const THREE = await import('three');
+  const renderer = new THREE.WebGLRenderer({canvas, antialias: true, alpha: true, powerPreference: 'low-power'});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 50);
+  camera.position.z = 5.4;
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const cyanLight = new THREE.DirectionalLight(0x3CD5E8, 2.4);
+  cyanLight.position.set(3, 3, 4);
+  scene.add(cyanLight);
+  const pinkLight = new THREE.DirectionalLight(0xFF3D81, 1.8);
+  pinkLight.position.set(-3, -2, 3);
+  scene.add(pinkLight);
+
+  const group = new THREE.Group();
+  scene.add(group);
+  group.add(new THREE.Mesh(
+   new THREE.TorusKnotGeometry(0.85, 0.28, 160, 24, 2, 3),
+   new THREE.MeshStandardMaterial({color: 0xFF3D81, metalness: 0.35, roughness: 0.3})
+  ));
+  group.add(new THREE.Mesh(
+   new THREE.IcosahedronGeometry(1.8, 1),
+   new THREE.MeshBasicMaterial({color: 0x3CD5E8, wireframe: true, transparent: true, opacity: 0.35})
+  ));
+
+  const motionPreference = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  let reduced = motionPreference && motionPreference.matches;
+  let visible = true;
+  let dragging = false;
+  let lastX = 0;
+  let lastY = 0;
+  let vx = 0.004;
+  let raf = 0;
+
+  function render() {
+   renderer.render(scene, camera);
+  }
+
+  function resize() {
+   const width = stage.clientWidth;
+   const height = stage.clientHeight;
+   if (!width || !height) return;
+   renderer.setSize(width, height, false);
+   camera.aspect = width / height;
+   camera.updateProjectionMatrix();
+   render();
+  }
+
+  function stop() {
+   if (!raf) return;
+   cancelAnimationFrame(raf);
+   raf = 0;
+  }
+
+  function animate() {
+   raf = 0;
+   if (reduced || !visible || document.hidden || dragging) return;
+   vx += (0.004 - vx) * 0.03;
+   group.rotation.y += vx;
+   group.rotation.x -= group.rotation.x * 0.01;
+   render();
+   raf = requestAnimationFrame(animate);
+  }
+
+  function start() {
+   if (!reduced && visible && !document.hidden && !dragging && !raf) {
+    raf = requestAnimationFrame(animate);
+   }
+  }
+
+  canvas.addEventListener('pointerdown', event => {
+   dragging = true;
+   lastX = event.clientX;
+   lastY = event.clientY;
+   canvas.setPointerCapture(event.pointerId);
+   stop();
+  });
+  canvas.addEventListener('pointermove', event => {
+   if (!dragging) return;
+   const dx = event.clientX - lastX;
+   const dy = event.clientY - lastY;
+   group.rotation.y += dx * 0.01;
+   group.rotation.x = Math.max(-1, Math.min(1, group.rotation.x + dy * 0.01));
+   lastX = event.clientX;
+   lastY = event.clientY;
+   render();
+  });
+  const endDrag = () => {
+   dragging = false;
+   start();
+  };
+  canvas.addEventListener('pointerup', endDrag);
+  canvas.addEventListener('pointercancel', endDrag);
+  canvas.addEventListener('keydown', event => {
+   const step = event.shiftKey ? 0.2 : 0.08;
+   if (event.key === 'ArrowLeft') group.rotation.y -= step;
+   else if (event.key === 'ArrowRight') group.rotation.y += step;
+   else if (event.key === 'ArrowUp') group.rotation.x = Math.max(-1, group.rotation.x - step);
+   else if (event.key === 'ArrowDown') group.rotation.x = Math.min(1, group.rotation.x + step);
+   else return;
+   event.preventDefault();
+   render();
+  });
+  canvas.addEventListener('webglcontextlost', () => {
+   stop();
+   stage.hidden = true;
+  });
+
+  if (motionPreference && motionPreference.addEventListener) {
+   motionPreference.addEventListener('change', event => {
+    reduced = event.matches;
+    if (reduced) stop();
+    else start();
+   });
+  }
+  if ('IntersectionObserver' in window) {
+   new IntersectionObserver(entries => {
+    visible = entries[0].isIntersecting;
+    if (visible) start();
+    else stop();
+   }).observe(stage);
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(stage);
+  else window.addEventListener('resize', resize);
+  document.addEventListener('visibilitychange', () => {
+   if (document.hidden) stop();
+   else start();
+  });
+  resize();
+  start();
+ } catch (error) {
+  console.warn('Interactive 3D hero is unavailable; the rest of the page is unaffected.', error);
+  stage.hidden = true;
+ }
+})();
 </script>
 </body>
 </html>
