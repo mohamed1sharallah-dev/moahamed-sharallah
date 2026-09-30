@@ -31,7 +31,6 @@ h1{font-size:clamp(2.4rem,8vw,4.6rem);line-height:1.02;margin:0 0 16px;font-weig
 .head{position:relative;height:0}
 .head::after{content:"";position:absolute;left:0;top:-90px;width:2px;height:90px;background:var(--neon);animation:scrub 6s cubic-bezier(.6,0,.3,1) 1 forwards}
 @keyframes scrub{from{left:34px}to{left:calc(100% - 4px)}}
-@media (prefers-reduced-motion:reduce){.head::after{animation:none;left:60%}}
 section{padding:44px 0;border-top:1px solid var(--line)}
 h2{font-size:1.5rem;margin:0 0 20px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
@@ -44,14 +43,24 @@ h2{font-size:1.5rem;margin:0 0 20px}
 .card div.t{padding:14px 16px}
 .card h3{margin:0 0 4px;font-size:1.05rem}
 .card p{margin:0;color:var(--mute);font-size:.92rem}
+[data-reveal]{opacity:1;transform:none}
+.motion-ready [data-reveal]{transition:opacity .55s ease,transform .55s cubic-bezier(.2,.65,.3,1)}
+.motion-ready [data-reveal]:not(.is-visible){opacity:0;transform:translateY(12px)}
 ul.svc{list-style:none;margin:0;padding:0;display:grid;gap:14px}
 ul.svc li{padding-left:16px;border-left:3px solid var(--neon)}
 ul.svc strong{display:block}
-a.btn{display:inline-block;background:var(--neon);color:#fff;padding:12px 22px;border-radius:4px;text-decoration:none;font-weight:700}
+a.btn{display:inline-block;background:var(--neon);color:#fff;padding:12px 22px;border-radius:4px;text-decoration:none;font-weight:700;transition:transform .18s ease,filter .18s ease}
+a.btn:hover,a.btn:focus-visible{transform:translateY(-2px);filter:brightness(1.06)}
 .contact-actions{display:flex;flex-wrap:wrap;gap:12px}
 a:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
 footer{padding:28px 0 40px;color:var(--mute);font-size:.85rem}
 @media (max-width:560px){.grid{grid-template-columns:1fr}.wrap{padding:0 16px}header{padding-top:36px}}
+@media (prefers-reduced-motion:reduce){
+ .head::after{animation:none;left:60%}
+ .motion-ready [data-reveal],.motion-ready [data-reveal]:not(.is-visible){opacity:1;transform:none;transition:none}
+ a.btn{transition:none}
+ a.btn:hover,a.btn:focus-visible{transform:none;filter:none}
+}
 </style>
 </head>
 <body>
@@ -68,25 +77,25 @@ footer{padding:28px 0 40px;color:var(--mute);font-size:.85rem}
 </div>
 </header>
 
-<section>
+<section data-reveal>
 <h2>Work with me</h2>
 <p class="sub">Send the footage, the deadline and one reference video you like.</p>
 <p class="contact-actions"><a class="btn" href="mailto:mohamed1sharallah@gmail.com">Email me</a><a class="btn" href="https://calendly.com/mohamed1sharallah" target="_blank" rel="noopener noreferrer">Book a call</a></p>
 </section>
 
-<section>
+<section data-reveal>
 <h2>Selected work</h2>
 <p class="sub">Videos start muted. Use the player controls to turn on sound.</p>
 <div class="grid work-grid">
- <article class="card">
+ <article class="card" data-reveal>
   <iframe class="media landscape" src="https://www.youtube-nocookie.com/embed/25wboHWG_Ew?autoplay=1&amp;mute=1" title="3D video - Confusion" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
   <div class="t"><h3>3D video &mdash; Confusion</h3><p>3D and motion piece. <a href="https://www.youtube.com/watch?v=25wboHWG_Ew" target="_blank" rel="noopener noreferrer">Watch on YouTube (opens in a new tab).</a></p></div>
  </article>
- <article class="card">
+ <article class="card" data-reveal>
   <iframe class="media landscape" src="https://www.youtube-nocookie.com/embed/ZTtU62iNZWI?autoplay=1&amp;mute=1" title="Tokyo at night video editing" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
   <div class="t"><h3>Tokyo at night</h3><p>38-second montage edited in Premiere Pro. Neon city shots, split-screen layouts and a teal night grade. <a href="https://www.youtube.com/watch?v=ZTtU62iNZWI" target="_blank" rel="noopener noreferrer">Watch on YouTube (opens in a new tab).</a></p></div>
  </article>
- <article class="card">
+ <article class="card" data-reveal>
   <video class="media portrait" autoplay muted controls playsinline preload="metadata" aria-label="Signal brand video (Arabic)">
    <source src="signall.mp4" type="video/mp4">
    Your browser does not support HTML video. <a href="signall.mp4">Download the Signal brand video (MP4)</a>.
@@ -96,7 +105,7 @@ footer{padding:28px 0 40px;color:var(--mute);font-size:.85rem}
 </div>
 </section>
 
-<section>
+<section data-reveal>
 <h2>What I do</h2>
 <ul class="svc">
  <li><strong>Short-form video</strong>Reels, TikTok and Shorts, cut for the first three seconds.</li>
@@ -107,5 +116,19 @@ footer{padding:28px 0 40px;color:var(--mute);font-size:.85rem}
 
 <footer>Mohamed Sharallah, Egypt. Arabic and English.</footer>
 </div>
+<script>
+if ((!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) && 'IntersectionObserver' in window) {
+ const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+   if (entry.isIntersecting) {
+    entry.target.classList.add('is-visible');
+    observer.unobserve(entry.target);
+   }
+  });
+ }, {threshold: 0.12, rootMargin: '0px 0px -32px 0px'});
+ document.querySelectorAll('[data-reveal]').forEach(element => observer.observe(element));
+ document.body.classList.add('motion-ready');
+}
+</script>
 </body>
 </html>
