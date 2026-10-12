@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mohamed Sharallah | Video Editor and 3D Artist</title>
+<meta name="description" content="Mohamed Sharallah is a freelance video editor and 3D artist in Egypt working in Adobe Premiere, Maya, Blender and Unreal Engine. Available for freelance work in Arabic and English.">
+<meta property="og:title" content="Mohamed Sharallah | Video Editor and 3D Artist">
+<meta property="og:description" content="Freelance video editor and 3D artist in Egypt. Premiere Pro, Maya, Blender, Unreal Engine. Arabic and English.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#08201F">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2308201F'/%3E%3Cpath d='M15 47V17h7l10 13 10-13h7v30h-8V30L32 41 23 30v17z' fill='%23FF3D81'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#08201F;--panel:#0E2D2C;--ink:#E8F4F1;--mute:#93B0AC;--line:#1F4644;--neon:#FF3D81;--cyan:#3CD5E8;--clip:#12383A;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Space Grotesk','Cairo',system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+header{padding:48px 0 24px}
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px;align-items:center}
+.stage{position:relative;aspect-ratio:1;width:100%;max-width:420px;justify-self:center}
+.stage::before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(60,213,232,.18),rgba(255,61,129,.12) 55%,transparent 72%)}
+#gl{position:relative;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab}
+.design-switcher{position:relative;width:100%;height:100%;display:block;touch-action:pan-y;cursor:pointer}
+.design-switch-links{position:absolute;left:4%;right:4%;bottom:2%;display:flex;justify-content:space-between;gap:8px;z-index:3}
+.design-switch-links a{color:var(--ink);background:rgba(8,32,31,.88);border:1px solid var(--line);border-radius:999px;padding:6px 10px;text-decoration:none;font-size:.7rem;letter-spacing:.04em}
+.design-switch-links a:hover,.design-switch-links a:focus-visible{border-color:var(--cyan);color:var(--cyan)}
+#gl:active{cursor:grabbing}
+#gl:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:50%}
+.hint{position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:.75rem;color:var(--mute);pointer-events:none}
+h1{font-size:clamp(2.4rem,8vw,4.6rem);line-height:1.02;margin:0 0 16px;font-weight:700;letter-spacing:-.02em;max-width:14ch}
+.sub{font-size:1.1rem;color:var(--mute);max-width:52ch;margin:0 0 6px}
+.ar{font-family:'Cairo',sans-serif;direction:rtl;text-align:right;color:var(--mute);max-width:52ch;margin:0}
+.tl{margin:32px 0 8px;border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:12px;overflow-x:auto}
+.track{display:grid;grid-template-columns:34px 1fr;align-items:center;gap:8px;min-width:560px;margin:6px 0}
+.track b{font-size:.75rem;color:var(--mute);font-weight:500}
+.lane{display:flex;gap:3px;height:38px}
+.clip{background:var(--clip);border-left:3px solid var(--cyan);padding:0 10px;display:flex;align-items:center;font-size:.85rem;white-space:nowrap;overflow:hidden;border-radius:2px}
+.clip.n{border-left-color:var(--neon)}
+.head{position:relative;height:0}
+.head::after{content:"";position:absolute;left:0;top:-90px;width:2px;height:90px;background:var(--neon);animation:scrub 6s cubic-bezier(.6,0,.3,1) 1 forwards}
+@keyframes scrub{from{left:34px}to{left:calc(100% - 4px)}}
+section{padding:44px 0;border-top:1px solid var(--line)}
+h2{font-size:1.5rem;margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.work-grid{grid-template-columns:minmax(0,1fr)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.media{display:block;width:100%;border:0;background:#000}
+.media.portrait{aspect-ratio:9/16;object-fit:contain}
+.work-grid .media.portrait{width:min(100%,320px);margin-inline:auto}
+.media.landscape{aspect-ratio:16/9}
+.card div.t{padding:14px 16px}
+.card h3{margin:0 0 4px;font-size:1.05rem}
+.card p{margin:0;color:var(--mute);font-size:.92rem}
+[data-reveal]{opacity:1;transform:none}
+.motion-ready [data-reveal]{transition:opacity .55s ease,transform .55s cubic-bezier(.2,.65,.3,1)}
+.motion-ready [data-reveal]:not(.is-visible){opacity:0;transform:translateY(12px)}
+ul.svc{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+ul.svc li{padding-left:16px;border-left:3px solid var(--neon)}
+ul.svc strong{display:block}
+a.btn{display:inline-block;background:var(--neon);color:#fff;padding:12px 22px;border-radius:4px;text-decoration:none;font-weight:700;transition:transform .18s ease,filter .18s ease}
+a.btn:hover,a.btn:focus-visible{transform:translateY(-2px);filter:brightness(1.06)}
+.contact-actions{display:flex;flex-wrap:wrap;gap:12px}
+a:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+footer{padding:28px 0 40px;color:var(--mute);font-size:.85rem}
+@media (max-width:720px){.hero{grid-template-columns:1fr}.stage{max-width:300px}}
+@media (max-width:560px){.grid{grid-template-columns:1fr}.wrap{padding:0 16px}header{padding-top:36px}}
+@media (prefers-reduced-motion:reduce){
+ .head::after{animation:none;left:60%}
+ .motion-ready [data-reveal],.motion-ready [data-reveal]:not(.is-visible){opacity:1;transform:none;transition:none}
+ a.btn{transition:none}
+ a.btn:hover,a.btn:focus-visible{transform:none;filter:none}
+}
+</style>
+<style id="dragon-background-style">.dragon-backdrop{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 52% 95%,rgba(255,91,40,.18),transparent 65%)}.dragon-backdrop img{width:100%;height:100%;object-fit:cover;opacity:.52;mix-blend-mode:screen;filter:drop-shadow(0 0 28px rgba(255,91,43,.28));animation:dragon-fire-breathe 7s ease-in-out infinite alternate}@keyframes dragon-fire-breathe{from{opacity:.42;transform:scale(1.01)}to{opacity:.6;transform:scale(1.04)}}main{position:relative;z-index:1}.wrap{position:relative;z-index:1}@media(max-width:700px){.dragon-backdrop img{object-position:58% center;opacity:.34}}@media(prefers-reduced-motion:reduce){.dragon-backdrop img{animation:none;opacity:.48}}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+</head>
+<body><div class="dragon-backdrop" aria-hidden="true"><img src="dragon-fire.svg" alt=""></div>
+<div class="wrap">
+<header>
+<div class="hero">
+ <div class="hero-text">
+<h1>Premiere edits with a 3D brain.</h1>
+<p class="sub">Mohamed Sharallah, video editor and 3D artist in Egypt. I edit in Adobe Premiere and add motion and 3D shots built in Maya, Blender and Unreal Engine.</p>
+<p class="ar" lang="ar">مونتاج فيديو بالعربي والإنجليزي، مع لقطات ثلاثية الأبعاد عند الحاجة.</p>
+ </div>
+ <div class="stage">
+  <canvas class="design-switcher" id="design-switcher" data-original-href="original-design.html#top" data-cinema-href="index.html#top" aria-label="Two rotating 3D objects. Tap the original knot for the original design or the cinema camera for the Cinema design." tabindex="0"></canvas>
+  <nav class="design-switch-links" aria-label="Choose website design"><a href="original-design.html#top">Original design</a><a href="index.html#top">Cinema design</a></nav>
+ </div>
+</div>
+<div class="tl" aria-label="Skills shown as a Premiere-style timeline">
+ <div class="track"><b>V2</b><div class="lane"><div class="clip n" style="flex:2">Unreal Engine</div><div class="clip n" style="flex:3">Maya</div><div class="clip n" style="flex:2">Blender</div></div></div>
+ <div class="track"><b>V1</b><div class="lane"><div class="clip" style="flex:7">Adobe Premiere Pro</div></div></div>
+ <div class="track"><b>A1</b><div class="lane"><div class="clip" style="flex:3">Arabic</div><div class="clip" style="flex:4">English</div></div></div>
+ <div class="head"></div>
+</div>
+</header>
+
+<section data-reveal>
+<h2>Work with me</h2>
+<p class="sub">Send the footage, the deadline and one reference video you like.</p>
+<p class="contact-actions"><a class="btn" href="mailto:mohamed1sharallah@gmail.com">Email me</a><a class="btn" href="https://calendly.com/mohamed1sharallah" target="_blank" rel="noopener noreferrer">Book a call</a><a class="btn" href="portfolio.pdf" download>Download portfolio (PDF)</a></p>
+</section>
+
+<section data-reveal>
+<h2>Selected work</h2>
+<p class="sub">Videos start muted. Use the player controls to turn on sound.</p>
+<div class="grid work-grid">
+ <article class="card" data-reveal>
+  <video class="media portrait" controls muted playsinline preload="metadata" poster="finance-explainer-poster.jpg" aria-label="Personal finance explainer video">
+   <source src="finance-explainer.mp4" type="video/mp4">
+   Your browser does not support HTML video. <a href="finance-explainer.mp4">Download the personal finance explainer (MP4)</a>.
+  </video>
+  <div class="t"><h3>Personal finance explainer</h3><p>Vertical educational edit with English subtitles and on-screen graphics.</p></div>
+ </article>
+ <article class="card" data-reveal>
+  <iframe class="media landscape" src="https://www.youtube-nocookie.com/embed/25wboHWG_Ew?autoplay=1&amp;mute=1" title="3D video - Confusion" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <div class="t"><h3>3D video &mdash; Confusion</h3><p>3D and motion piece. <a href="https://www.youtube.com/watch?v=25wboHWG_Ew" target="_blank" rel="noopener noreferrer">Watch on YouTube (opens in a new tab).</a></p></div>
+ </article>
+ <article class="card" data-reveal>
+  <iframe class="media landscape" src="https://www.youtube-nocookie.com/embed/ZTtU62iNZWI?autoplay=1&amp;mute=1" title="Tokyo at night video editing" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <div class="t"><h3>Tokyo at night</h3><p>38-second montage edited in Premiere Pro. Neon city shots, split-screen layouts and a teal night grade. <a href="https://www.youtube.com/watch?v=ZTtU62iNZWI" target="_blank" rel="noopener noreferrer">Watch on YouTube (opens in a new tab).</a></p></div>
+ </article>
+ <article class="card" data-reveal>
+  <video class="media portrait" autoplay muted controls playsinline preload="metadata" aria-label="Signal brand video (Arabic)">
+   <source src="signall.mp4" type="video/mp4">
+   Your browser does not support HTML video. <a href="signall.mp4">Download the Signal brand video (MP4)</a>.
+  </video>
+  <div class="t"><h3>Signal brand video (Arabic)</h3><p>Vertical branded content for Signal toothpaste. Family video with Arabic on-screen text, shot and edited for social.</p></div>
+ </article>
+</div>
+</section>
+
+<section data-reveal>
+<h2>What I do</h2>
+<ul class="svc">
+ <li><strong>Short-form video</strong>Reels, TikTok and Shorts, cut for the first three seconds.</li>
+ <li><strong>Long-form editing</strong>YouTube videos, interviews and freelance-topic content in Arabic or English.</li>
+ <li><strong>3D and motion inserts</strong>Product shots, intros and scenes made in Maya, Blender or Unreal.</li>
+</ul>
+</section>
+
+<footer>Mohamed Sharallah, Egypt. Arabic and English.</footer>
+</div>
+<script>
+if ((!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) && 'IntersectionObserver' in window) {
+ const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+   if (entry.isIntersecting) {
+    entry.target.classList.add('is-visible');
+    observer.unobserve(entry.target);
+   }
+  });
+ }, {threshold: 0.12, rootMargin: '0px 0px -32px 0px'});
+ document.querySelectorAll('[data-reveal]').forEach(element => observer.observe(element));
+ document.body.classList.add('motion-ready');
+}
+</script>
+<script type="module">
+(async () => {
+ const stage = document.querySelector('.stage');
+ const canvas = document.getElementById('gl');
+ if (!stage || !canvas) return;
+
+ try {
+  const THREE = await import('three');
+  const renderer = new THREE.WebGLRenderer({canvas, antialias: true, alpha: true, powerPreference: 'low-power'});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 50);
+  camera.position.z = 5.4;
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const cyanLight = new THREE.DirectionalLight(0x3CD5E8, 2.4);
+  cyanLight.position.set(3, 3, 4);
+  scene.add(cyanLight);
+  const pinkLight = new THREE.DirectionalLight(0xFF3D81, 1.8);
+  pinkLight.position.set(-3, -2, 3);
+  scene.add(pinkLight);
+
+  const group = new THREE.Group();
+  scene.add(group);
+  group.add(new THREE.Mesh(
+   new THREE.TorusKnotGeometry(0.85, 0.28, 160, 24, 2, 3),
+   new THREE.MeshStandardMaterial({color: 0xFF3D81, metalness: 0.35, roughness: 0.3})
+  ));
+  group.add(new THREE.Mesh(
+   new THREE.IcosahedronGeometry(1.8, 1),
+   new THREE.MeshBasicMaterial({color: 0x3CD5E8, wireframe: true, transparent: true, opacity: 0.35})
+  ));
+
+  const motionPreference = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  let reduced = motionPreference && motionPreference.matches;
+  let visible = true;
+  let dragging = false;
+  let lastX = 0;
+  let lastY = 0;
+  let vx = 0.004;
+  let raf = 0;
+
+  function render() {
+   renderer.render(scene, camera);
+  }
+
+  function resize() {
+   const width = stage.clientWidth;
+   const height = stage.clientHeight;
+   if (!width || !height) return;
+   renderer.setSize(width, height, false);
+   camera.aspect = width / height;
+   camera.updateProjectionMatrix();
+   render();
+  }
+
+  function stop() {
+   if (!raf) return;
+   cancelAnimationFrame(raf);
+   raf = 0;
+  }
+
+  function animate() {
+   raf = 0;
+   if (reduced || !visible || document.hidden || dragging) return;
+   vx += (0.004 - vx) * 0.03;
+   group.rotation.y += vx;
+   group.rotation.x -= group.rotation.x * 0.01;
+   render();
+   raf = requestAnimationFrame(animate);
+  }
+
+  function start() {
+   if (!reduced && visible && !document.hidden && !dragging && !raf) {
+    raf = requestAnimationFrame(animate);
+   }
+  }
+
+  canvas.addEventListener('pointerdown', event => {
+   dragging = true;
+   lastX = event.clientX;
+   lastY = event.clientY;
+   canvas.setPointerCapture(event.pointerId);
+   stop();
+  });
+  canvas.addEventListener('pointermove', event => {
+   if (!dragging) return;
+   const dx = event.clientX - lastX;
+   const dy = event.clientY - lastY;
+   group.rotation.y += dx * 0.01;
+   group.rotation.x = Math.max(-1, Math.min(1, group.rotation.x + dy * 0.01));
+   lastX = event.clientX;
+   lastY = event.clientY;
+   render();
+  });
+  const endDrag = () => {
+   dragging = false;
+   start();
+  };
+  canvas.addEventListener('pointerup', endDrag);
+  canvas.addEventListener('pointercancel', endDrag);
+  canvas.addEventListener('keydown', event => {
+   const step = event.shiftKey ? 0.2 : 0.08;
+   if (event.key === 'ArrowLeft') group.rotation.y -= step;
+   else if (event.key === 'ArrowRight') group.rotation.y += step;
+   else if (event.key === 'ArrowUp') group.rotation.x = Math.max(-1, group.rotation.x - step);
+   else if (event.key === 'ArrowDown') group.rotation.x = Math.min(1, group.rotation.x + step);
+   else return;
+   event.preventDefault();
+   render();
+  });
+  canvas.addEventListener('webglcontextlost', () => {
+   stop();
+   stage.hidden = true;
+  });
+
+  if (motionPreference && motionPreference.addEventListener) {
+   motionPreference.addEventListener('change', event => {
+    reduced = event.matches;
+    if (reduced) stop();
+    else start();
+   });
+  }
+  if ('IntersectionObserver' in window) {
+   new IntersectionObserver(entries => {
+    visible = entries[0].isIntersecting;
+    if (visible) start();
+    else stop();
+   }).observe(stage);
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(stage);
+  else window.addEventListener('resize', resize);
+  document.addEventListener('visibilitychange', () => {
+   if (document.hidden) stop();
+   else start();
+  });
+  resize();
+  start();
+ } catch (error) {
+  console.warn('Interactive 3D hero is unavailable; the rest of the page is unaffected.', error);
+  stage.hidden = true;
+ }
+})();
+</script>
+<script type="module" src="design-switcher.js"></script>
+</body>
+</html>
+
+
+
+
